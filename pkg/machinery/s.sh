@@ -1,1 +1,0 @@
-newman run collection.json -d input.csv --reporters json --reporter-json-export results.json --silent && echo "user_id" > canceled-users.csv && jq -r '.run.executions[]|select(.assertions[]|select(.assertion|contains("canceled"))|.error==null)|.data.user_id' results.json >> canceled-users.csv

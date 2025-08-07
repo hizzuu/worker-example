@@ -1,0 +1,53 @@
+{
+  "info": {
+    "name": "JSONPlaceholder API Tests",
+    "description": "Collection for testing JSONPlaceholder API with CSV data",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get User Todos",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const todos = pm.response.json();",
+              "const userId = pm.iterationData.get('userId');",
+              "const completed = todos.filter(t => t.completed).length;",
+              "",
+              "// Store if 7+ completed",
+              "let results = pm.globals.get('results') || [];",
+              "if (completed >= 7) results.push(userId);",
+              "pm.globals.set('results', results);",
+              "",
+              "// Output on last iteration",
+              "if (pm.info.iteration === pm.info.iterationCount - 1) {",
+              "    console.log('FILTERED_USERS:' + [...new Set(results)].sort().join(','));",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users/{{userId}}/todos",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users",
+            "{{userId}}",
+            "todos"
+          ]
+        }
+      }
+    }
+  ]
+}
